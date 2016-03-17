@@ -1,0 +1,21 @@
+for (i in vars) {
+  tab <- table(munic[,i], munic[,'FAIXA'])
+  tab <- apply(tab, 1, function(x) {x / apply(tab, 2, sum)})
+  dat <- melt(
+    tab, 
+    id.vars = dimnames(tab)[[1]], 
+    value.name = 'prop', 
+    variable.name = dimnames(tab)[[2]])
+  
+  q = ggplot(dat, aes(x = Var2, y = prop)) +
+    geom_bar(stat='identity', aes(fill = Var2), position = 'dodge') +
+    scale_fill_brewer(palette = "Greys")+
+    facet_wrap(~Var1) +
+    theme_bw()+
+    guides(fill = guide_legend(title = 'Legenda')) +
+    theme(legend.position = 'none',
+          axis.text.x = element_text(angle = ifelse(nlevels(munic[,i]) > 2, 90, 0), hjust = .5)) +
+    labs(x = 'Fonte: IBGE- Pesquisa MUNIC', y = 'Proporção de municípios', title = i)
+  
+  print(q)
+}
