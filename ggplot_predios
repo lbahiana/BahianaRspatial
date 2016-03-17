@@ -1,0 +1,12 @@
+setwd("C:/Users/Uer/Desktop/1906")
+logra <- read.csv("consolida.csv", header = TRUE, sep = ";")
+attach(logra)
+str(logra)
+options(digits=2)
+dens <- (pop/predios)
+require(ggplot2)
+
+plt <- ggplot(logra, aes(Tipo,dens))+
+  geom_bar(stat="identity",alpha= 0.2, size= 2.0, color="violet")+
+  facet_wrap(~Distrito )
+plt
